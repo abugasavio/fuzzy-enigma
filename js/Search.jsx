@@ -6,7 +6,7 @@ const Search = React.createClass({
 
   getInitialState () {
     return {
-      searchTerm: 'this is my search term'
+      searchTerm: ''
     }
   },
 
@@ -22,8 +22,10 @@ const Search = React.createClass({
           <input className='search-input' type='text' value={this.state.searchTerm} placeholder='Search' onChange={this.handleSearchTermEvent} />
         </header>
         <div className='shows'>
-          {data.shows.map((show) => (
-            <ShowCard {...show} key={show.imdbID} />
+          {data.shows
+            .filter((show) => `${show.title} ${show.description}`.toUpperCase().indexOf(this.state.searchTerm.toUpperCase()) >= 0)
+            .map((show) => (
+              <ShowCard {...show} key={show.imdbID} />
           ))}
         </div>
       </div>)
