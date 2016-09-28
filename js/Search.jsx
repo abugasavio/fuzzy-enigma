@@ -1,30 +1,33 @@
 const React = require('react')
 const ShowCard = require('./ShowCard')
-const Header = require('./Header')
-const Store = require('./Store')
-const { connector } = Store
+const data = require('../public/data')
 
-class Search extends React.Component {
+const Search = React.createClass({
+
+  getInitialState () {
+    return {
+      searchTerm: 'this is my search term'
+    }
+  },
+
+  handleSearchTermEvent (event) {
+    this.setState({searchTerm: event.target.value})
+  },
+
   render () {
-    const searchTerm = this.props.searchTerm || ''
     return (
-      <div className='container'>
-        <Header showSearch />
+      <div className="container">
+        <header className='header'>
+          <h1 className='brand'>{this.state.searchTerm}</h1>
+          <input className='search-input' type='text' value={this.state.searchTerm} placeholder='Search' onChange={this.handleSearchTermEvent} />
+        </header>
         <div className='shows'>
-          {this.props.route.shows
-            .filter((show) => `${show.title} ${show.description}`.toUpperCase().indexOf(searchTerm.toUpperCase()) >= 0)
-            .map((show, index) => (
-              <ShowCard key={show.imdbID} id={index} {...show} />
+          {data.shows.map((show) => (
+            <ShowCard {...show} key={show.imdbID} />
           ))}
         </div>
-      </div>
-    )
+      </div>)
   }
-}
+})
 
-Search.propTypes = {
-  shows: React.PropTypes.arrayOf(React.PropTypes.object),
-  searchTerm: React.PropTypes.string
-}
-
-module.exports = connector(Search)
+module.exports = Search

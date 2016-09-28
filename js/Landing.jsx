@@ -1,39 +1,13 @@
 const React = require('react')
-const ReactRouter = require('react-router')
-const { Link, browserHistory } = ReactRouter
-const Store = require('./Store')
-const { connector } = Store
+const { Link } = require('react-router')
 
-class Landing extends React.Component {
-  constructor (props) {
-    super(props)
+const Landing = () => (
+  <div className='home-info'>
+    <h1 className='title'>svideo</h1>
+    <input className='search' type='text' placeholder='search' />
+    <Link to='search' className='browse-all'>or Browse all</Link>
+  </div>
+  )
 
-    this.handleTermEvent = this.handleTermEvent.bind(this)
-    this.goToSearch = this.goToSearch.bind(this)
-  }
-  handleTermEvent (e) {
-    this.props.setSearchTerm(e.target.value)
-  }
-  goToSearch (e) {
-    browserHistory.push('search')
-    e.preventDefault()
-  }
-  render () {
-    return (
-      <div className='home-info'>
-        <h1 className='title'>svideo</h1>
-        <form onSubmit={this.goToSearch}>
-          <input onChange={this.handleTermEvent} className='search' type='text' value={this.props.searchTerm} placeholder='Search' />
-        </form>
-        <Link to='/search' className='browse-all'>or Browse All</Link>
-      </div>
-    )
-  }
-}
+module.exports = Landing
 
-Landing.propTypes = {
-  setSearchTerm: React.PropTypes.func,
-  searchTerm: React.PropTypes.string
-}
-
-module.exports = connector(Landing)
